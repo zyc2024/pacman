@@ -1,0 +1,3 @@
+<{pacman,maze,ghosts,direction,ghostBehavior,mazeBuilder}.ml>: coverage
+<test.{byte,native}>: coverage
+true: package(ounit2),package(yojson),package(graphics)
