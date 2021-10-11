@@ -1,4 +1,4 @@
-Ensure all packages are installed from CS 3110 course.
+Ensure all packages are installed from CS 3110 course (install and initialize opam)
 
 ### WINDOWS:
   - $ sudo apt-get install pkg-config
