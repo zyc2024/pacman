@@ -6,3 +6,9 @@ See INSTALL.md
 
 # Start of the Game
 ![Game Initialized](./image/start.png)
+
+# Power-Up
+![Pacman gets power-up](./image/power.png)
+
+# Pacman captures Ghost
+![ghost eaten](./image/capture.png)
