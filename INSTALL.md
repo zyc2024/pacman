@@ -18,9 +18,9 @@ Ensure all packages are installed from CS 3110 course (install and initialize op
   - Requires ONE of the following two Unix package manager
     - MacPorts
     - Homebrew
-  - IF using Homebrew :
-	  - $ brew install pkg-config
-  - IF using MacPorts :
+  - If using Homebrew :
+    - $ brew install pkg-config
+  - If using MacPorts :
     - $ sudo port install pkg-config
   - $ opam switch create cs3110-project ocaml-base-compiler.4.11.1
   - $ eval $(opam env) *ONLY IF IT ASKS YOU TO*
@@ -39,10 +39,9 @@ Ensure all packages are installed from CS 3110 course (install and initialize op
   5. This should open a new graphical window and ensures graphics module was properly installed.
   6. Close the graphical window
     - you will see an exception that says **Graphics.Graphic_failure("fatal I/O error")**
-  7. Download pacman.zip
-  8. Create a new folder and move pacman.zip into the folder. Next, cd into the new folder.
-  9. $ unzip pacman.zip 
-  10. Make sure if on Windows, xlaunch is running in the background!! For mac, make sure XQuartz is running.
-  11. $ make build
-  12. $ make play  
-  Play the game! (use WSAD)
+  7. Download pacman source code
+  8. Next, cd into the folder with pacman source code. 
+  9. Make sure if on Windows, xlaunch is running in the background!! For mac, make sure XQuartz is running.
+  10. $ make build
+  11. $ make play  
+  Play the game! Move pacman with keys WSAD.
