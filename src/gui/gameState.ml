@@ -1,3 +1,6 @@
+open Util
+open Characters
+open Components
 open Direction
 open GhostBehavior
 
@@ -53,7 +56,7 @@ let is_alive (game : t) = game.alive
 
 let num_lives (game : t) = game.lives
 
-let init_display (game : t) =
+let init_display (_game : t) =
   Graphics.(
     open_graph " 800*600";
     set_window_title "Pac-man";

@@ -17,7 +17,7 @@ let data key json =
   try
     let lst = json |> List.assoc key |> Yojson.Basic.Util.to_list in
     List.map (fun s -> Yojson.Basic.Util.to_string s) lst
-  with e -> raise (ParseError "required data not found")
+  with _ -> raise (ParseError "required data not found")
 
 (** [coord_set key filename] converts data associated with key into
     coordinate pairs*)
@@ -63,4 +63,4 @@ let build_level w h file_name =
     !maze
   with
   | ParseError s -> failwith s
-  | e -> failwith "parsing failed"
+  | _ -> failwith "parsing failed"

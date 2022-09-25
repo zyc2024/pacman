@@ -1,0 +1,6 @@
+(library
+ (name components)
+ (public_name pacman.components)
+ (instrumentation
+  (backend bisect_ppx))
+ (libraries yojson util draw))

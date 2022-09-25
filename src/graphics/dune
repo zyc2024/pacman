@@ -1,0 +1,4 @@
+(library
+ (name draw)
+ (public_name pacman.draw)
+ (libraries graphics))

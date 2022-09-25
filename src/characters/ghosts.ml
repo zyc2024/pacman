@@ -1,3 +1,6 @@
+open Util
+open Components
+
 type mode =
   | Chase
   | Scatter
@@ -119,7 +122,7 @@ and move maze ghost (dir : Direction.dir) mvmt_speed =
     in
     { ghost with pos = move_with_cdir }
 
-let collision (ghost : t) (p : Pacman.t) (m : Maze.t) =
+let collision (ghost : t) (p : Pacman.t) (_m : Maze.t) =
   let gx, gy = get_coords ghost in
   let tx, ty = Pacman.get_coords p in
   let left = max gx tx in

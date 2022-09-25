@@ -3,6 +3,9 @@
     This module represents the data stored about a ghost, including the
     coordinates, name, and color. *)
 
+open Util
+open Components
+
 (** a [name] represents the identity of a ghost*)
 type name =
   | Blinky

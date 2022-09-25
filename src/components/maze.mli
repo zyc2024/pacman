@@ -4,6 +4,8 @@
     ghosts) travel around on. The maze is built with a collection of
     walls and consumable items*)
 
+open Util
+
 (** a [fruit] is one of the consumable items in the game which rewards
     more points than dots.*)
 type fruit =

@@ -1,9 +1,11 @@
-open Direction
+open Util
+open Components
 open Ghosts
+open Direction
 open Maze
 
 module type Behavior = sig
-  val move : Ghosts.t -> Maze.t -> Pacman.t -> Ghosts.t
+  val move : Ghosts.t -> Components.Maze.t -> Pacman.t -> Ghosts.t
 end
 
 (** [dir_cmp m (x1,y1) (x2,y2) dir1 dir2] compares the distances between
@@ -48,7 +50,7 @@ let best_local_dir cmp get_pref g m (target : int * int) =
       let alt_dirs = filter others |> List.sort comparator in
       List.hd alt_dirs
       (* there is no dead so there is always a direction to exit*)
-  | h :: t -> h
+  | h :: _ -> h
 
 (** [frightened_dir g m p] is the preferred (allowed) direction for
     ghost [g] to travel to maintain the greatest distance from pacman

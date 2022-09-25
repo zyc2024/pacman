@@ -1,0 +1,13 @@
+(library
+ (name gui)
+ (public_name pacman.gui)
+ (modules gameState)
+ (instrumentation
+  (backend bisect_ppx))
+ (libraries graphics components characters util))
+
+(executable
+ (public_name pacman)
+ (name main)
+ (modules main)
+ (libraries gui))

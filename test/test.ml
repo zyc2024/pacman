@@ -18,7 +18,9 @@
     than solely individually*)
 
 open OUnit2
-open Direction
+open Components
+open Characters
+open Util.Direction
 
 (********************************************************************
    Here are some helper functions. 
@@ -34,13 +36,14 @@ let pp_list pp_elt lst =
     let rec loop n acc = function
       | [] -> acc
       | [ h ] -> acc ^ pp_elt h
-      | h1 :: (h2 :: t as t') ->
+      | h1 :: (_h2 :: _t as t') ->
           if n = 100 then acc ^ "..."
           else loop (n + 1) (acc ^ pp_elt h1 ^ "; ") t'
     in
     loop 0 "" lst
   in
   "[" ^ pp_elts lst ^ "]"
+  [@@coverage off]
 
 (** [pp_tuple tp] pretty-prints a tuple*)
 let pp_tuple pp_elt tp =
@@ -61,6 +64,7 @@ let mode_to_str mode =
   | Chase -> "Chase"
   | Frightened -> "Frightened"
   | Dead -> "Dead"
+  [@@coverage off]
 
 (** [pp_dir dir] pretty-prints a direction*)
 let pp_dir dir = pp_string (dir_to_str dir)
@@ -102,7 +106,7 @@ module MazeTest = struct
   (* alias for has_struct for 10x7 map*)
   let has s pos = has_struct map s pos
 
-  let build_structs =
+  let _build_structs =
     List.iter (fun i -> make Wall (i * 16, 16)) (1 -- 8);
     let structs =
       [ Fruit Strawberry; Dot; PowerDot; Wall; Path; JailExit; Path ]
@@ -115,7 +119,7 @@ module MazeTest = struct
 
   let fruit_map = grid_init 2 3
 
-  let build_fruits =
+  let _build_fruits =
     make_struct fruit_map (Fruit Strawberry) (0, 0);
     make_struct fruit_map (Fruit Apple) (16, 0);
     make_struct fruit_map (Fruit Orange) (0, 16);
@@ -227,7 +231,7 @@ end
    partial-jail exits and walls at (16,0), (0,32) and (48,0) *)
 let maze = Maze.grid_init 10 10
 
-let build =
+let _build =
   List.iter
     (fun pos -> Maze.make_struct maze Wall pos)
     [ (16, 0); (48, 0); (0, 32) ];
@@ -362,10 +366,10 @@ module MazeBuilderTests = struct
       ( "nonexisting file for building map" >:: fun _ ->
         assert_raises (Failure "parsing failed") (fun () ->
             build_level 10 10 "jack") );
-      ( "incorrest data formatting" >:: fun _ ->
+      ( "incorrect data formatting" >:: fun _ ->
         assert_raises (Failure "incorrect formatting") (fun () ->
             build_level 10 10 "test_samples/sample1.json") );
-      ( "incorrest json missing data attr" >:: fun _ ->
+      ( "incorrect json missing data attr" >:: fun _ ->
         assert_raises (Failure "required data not found") (fun () ->
             build_level 10 10 "test_samples/sample2.json") );
       ( "invalid game-map -> no exit" >:: fun _ ->

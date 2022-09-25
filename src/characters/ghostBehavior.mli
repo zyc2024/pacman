@@ -3,6 +3,8 @@
     This module holds the personalities of each ghost. Each ghost has
     its method to capturing pacman*)
 
+open Components
+
 (** [Behavior] contains the algorithm that a ghost uses to move around
     the map based on its current priorities (chasing, running away,
     patrolling)*)

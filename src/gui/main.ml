@@ -1,3 +1,5 @@
+
+open Gui
 open Graphics
 
 exception Victory
@@ -17,7 +19,7 @@ let highscore () =
       |> Yojson.Basic.Util.to_assoc
     in
     json |> List.assoc "high score" |> Yojson.Basic.Util.to_int
-  with e -> 0
+  with _e -> 0
 
 (** [update_highscore] writes to a local json file to keep track of the
     highest score recorded on the player's computer. *)
@@ -99,7 +101,7 @@ let rec victory (game : GameState.t) =
       draw_final_score game;
       restart game
     end
-  with e -> close_gracefully game
+  with _e -> close_gracefully game
 
 (** [defeat game] displays the gameover screen once a player loses. *)
 and defeat (game : GameState.t) =
@@ -109,7 +111,7 @@ and defeat (game : GameState.t) =
     draw_string "YOU DIED.";
     draw_final_score game;
     restart game
-  with e -> close_gracefully game
+  with _e -> close_gracefully game
 
 (** [restart game] prompts the user to press r key to reinitialize game*)
 and restart game =
@@ -121,7 +123,7 @@ and restart game =
         level := 0;
         main 0 3)
     done
-  with e -> close_gracefully game
+  with _e -> close_gracefully game
 
 and main score lives =
   try

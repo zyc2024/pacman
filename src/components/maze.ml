@@ -1,3 +1,6 @@
+open Util
+open Draw
+
 type fruit =
   | Cherry
   | Strawberry
@@ -161,7 +164,7 @@ let has_struct m s (x, y) =
   match get_tile m (x, y) with
   | WallTile t -> eq_walltype t.wtype
   | PointTile t -> if t.big then PowerDot = s else Dot = s
-  | PathTile t -> Path = s
+  | PathTile _ -> Path = s
   | FruitTile t -> eq_fruits t.fruit
 
 let has_some_fruit m (x, y) =
@@ -177,7 +180,7 @@ let count_struct m s =
   Array.iteri
     (fun i arr ->
       Array.iteri
-        (fun j t ->
+        (fun j _ ->
           if has_struct m s (i * 16, j * 16) then count := !count + 1)
         arr)
     m.map;
@@ -260,5 +263,5 @@ let travel_dirs m (x1, y1) (x2, y2) =
 let get_jail_coords (m : t) =
   let jails = !(m.exit) in
   match jails with
-  | [ (x, y); (x', y') ] when abs (x - x') = 16 -> (x, y)
+  | [ (x, y); (x', _) ] when abs (x - x') = 16 -> (x, y)
   | _ -> failwith "invalid map"

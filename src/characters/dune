@@ -1,0 +1,6 @@
+(library
+ (name characters)
+ (public_name pacman.characters)
+ (instrumentation
+  (backend bisect_ppx))
+ (libraries graphics components util))

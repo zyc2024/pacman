@@ -1,0 +1,6 @@
+(executable
+ (public_name pacman-test)
+ (name test)
+ (libraries ounit2 util components characters)
+ (instrumentation
+  (backend bisect_ppx)))

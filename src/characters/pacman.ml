@@ -1,6 +1,6 @@
 open Graphics
-open Maze
-open Direction
+open Components
+open Util
 
 (** AF : a pacman with position (x,y) with direction d1 and alternative
     direction d2 represents a pacman player on the game map whose
@@ -9,15 +9,12 @@ open Direction
     must be within the map and not overlap any walls*)
 type t = {
   pos : int * int;
-  cdir : dir;
-  adir : dir option;
+  cdir : Direction.dir;
+  adir : Direction.dir option;
 }
 
 (** The speed at which ghosts travel by defauly. *)
 let speed = 2
-
-(** The width and height of each tile. *)
-let tile_size = 16
 
 let create coords dir = { pos = coords; cdir = dir; adir = None }
 

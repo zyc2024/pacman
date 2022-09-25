@@ -3,6 +3,9 @@
     Pacman represents a pacman entity (the player) and its associated
     game data such as position and direction *)
 
+open Util
+open Components
+
 (** The abstract type of values representing a pacman. *)
 type t
 

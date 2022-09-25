@@ -1,10 +1,10 @@
-Ensure all packages are installed from CS 3110 course (install and initialize opam)
+Requirements: install and initialize opam
 
 ### WINDOWS:
   - $ sudo apt-get install pkg-config
-  - $ opam switch create cs3110-project ocaml-base-compiler.4.11.1
+  - $ opam switch create pacman ocaml-base-compiler.4.14.0
   - $ eval $(opam env) *ONLY IF IT ASKS YOU TO*
-  - $ opam install -y utop ounit qcheck ocaml-lsp-server ocamlformat yojson graphics ansiterminal csv bisect_ppx-ocamlbuild menhir user-setup
+  - $ opam install -y dune merlin utop ounit ocaml-lsp-server ocamlformat yojson graphics bisect_ppx menhir user-setup
   - $ opam user-setup install
   - go to https://sourceforge.net/projects/vcxsrv/, download, install normally.
     - open xlaunch from folder where you downloaded it
@@ -22,15 +22,15 @@ Ensure all packages are installed from CS 3110 course (install and initialize op
     - $ brew install pkg-config
   - If using MacPorts :
     - $ sudo port install pkg-config
-  - $ opam switch create cs3110-project ocaml-base-compiler.4.11.1
+  - $ opam switch create pacman ocaml-base-compiler.4.14.0
   - $ eval $(opam env) *ONLY IF IT ASKS YOU TO*
-  - $ opam install -y utop ounit qcheck ocaml-lsp-server ocamlformat yojson graphics ansiterminal csv bisect_ppx-ocamlbuild menhir user-setup
+  - $ opam install -y dune merlin utop ounit ocaml-lsp-server ocamlformat yojson graphics bisect_ppx menhir user-setup
   - $ opam user-setup install
 
 ### Both:
-  1. Make sure you are on correct switch (i.e. cs3110-project)
+  1. Make sure you are on correct switch (i.e. pacman)
     - $ opam switch list
-    - you should expect an arrow to the switch (i.e. cs3110-project)
+    - you should expect an arrow to the switch (i.e. pacman)
     - Otherwise, for some unknown reason that you are in a different switch run this command
     - $ opam switch [name of switch]
   2. $ utop
