@@ -1,13 +1,11 @@
 (library
- (name gui)
- (public_name pacman.gui)
+ (name game)
+ (public_name pacman.game)
  (modules gameState)
- (instrumentation
-  (backend bisect_ppx))
  (libraries graphics components characters util))
 
 (executable
  (public_name pacman)
  (name main)
  (modules main author)
- (libraries gui))
+ (libraries game))

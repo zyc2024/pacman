@@ -1,4 +1,4 @@
-open Gui
+open Game
 open Graphics
 
 exception Victory
