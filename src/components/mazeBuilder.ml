@@ -1,7 +1,7 @@
 exception ParseError of string
 
-(** [perimeter_wall w h] is a list of indices in which a [Wall] will
-    occupy on a maze of width [w] and height [h].*)
+(** [perimeter_wall w h] is a list of indices in which a [Wall] will occupy on a
+    maze of width [w] and height [h].*)
 let perimeter_wall w h =
   let rec loop i max f acc =
     if i >= max then acc else loop (i + 1) max f (f i :: acc)
@@ -11,16 +11,16 @@ let perimeter_wall w h =
   let right = loop 0 h (fun b -> (w - 1, b)) top in
   loop 1 (w - 1) (fun a -> (a, h - 1)) right
 
-(** [data key json] is the string data corresponding to the [key] in
-    data [json].*)
+(** [data key json] is the string data corresponding to the [key] in data
+    [json].*)
 let data key json =
   try
     let lst = json |> List.assoc key |> Yojson.Basic.Util.to_list in
     List.map (fun s -> Yojson.Basic.Util.to_string s) lst
   with _ -> raise (ParseError "required data not found")
 
-(** [coord_set key filename] converts data associated with key into
-    coordinate pairs*)
+(** [coord_set key filename] converts data associated with key into coordinate
+    pairs*)
 let coord_set key file_name =
   let rec loop lst acc =
     let parse s lst =
@@ -44,9 +44,7 @@ let coord_set key file_name =
 
 let build_level w h file_name =
   try
-    let json =
-      Yojson.Basic.from_file file_name |> Yojson.Basic.Util.to_assoc
-    in
+    let json = Yojson.Basic.from_file file_name |> Yojson.Basic.Util.to_assoc in
     let maze = ref (Maze.grid_init w h) in
     let rec loop lst s =
       match lst with

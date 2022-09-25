@@ -23,8 +23,7 @@ type structure =
 
 let tile_size = 16
 
-(* A point tile holds coordinates and the type of pellet at that
-   position*)
+(* A point tile holds coordinates and the type of pellet at that position*)
 type point_tile = {
   coords : int * int;
   big : bool;
@@ -49,17 +48,16 @@ type tile =
   | PointTile of point_tile
   | FruitTile of fruit_tile
 
-(** AF : a maze (alternatively, a game map) with n rows of tiles
-    [t1...tm] represents the map whose dimensions are n and m with tiles
-    [\[t11...t1m\]...\[tn1...tnm\]]. RI : the map must be rectangular
-    and have tile data associated with every row and column*)
+(** AF : a maze (alternatively, a game map) with n rows of tiles [t1...tm]
+    represents the map whose dimensions are n and m with tiles
+    [\[t11...t1m\]...\[tn1...tnm\]]. RI : the map must be rectangular and have
+    tile data associated with every row and column*)
 type t = {
   map : tile array array;
   exit : (int * int) list ref;
 }
 
 let width (m : t) = Array.length m.map
-
 let height (m : t) = Array.length m.map.(0)
 
 (** [draw_fruit ft] draws the corresponding fruit at the tile's position*)
@@ -94,8 +92,7 @@ let grid_init w h =
   let m =
     Array.init w (fun i ->
         Array.init h (fun j ->
-            PointTile
-              { coords = (i * tile_size, j * tile_size); big = false }))
+            PointTile { coords = (i * tile_size, j * tile_size); big = false }))
   in
   { map = m; exit = ref [] }
 
@@ -108,8 +105,8 @@ let normalize (maze : t) (x, y) =
   let ny = pmod y (16 * height maze) in
   (nx, ny)
 
-(** [get_index m (x,y)] is the index pair (i,j) of the tile that
-    position [(x,y)] lies on in maze [m]*)
+(** [get_index m (x,y)] is the index pair (i,j) of the tile that position
+    [(x,y)] lies on in maze [m]*)
 let get_index m (x, y) =
   let size_f = tile_size |> float_of_int in
   let i, j =
@@ -143,8 +140,8 @@ let make_struct (m : t) s (x, y) =
   let i, j = get_index m (x, y) in
   let coords = get_tile_pos m (x, y) in
   let map = m.map in
-  (* an existing jail occupying the current tile needs to be removed
-     from list of exits.*)
+  (* an existing jail occupying the current tile needs to be removed from list
+     of exits.*)
   m.exit := List.filter (fun pos -> pos <> coords) !(m.exit);
   match s with
   | Dot -> map.(i).(j) <- PointTile { coords; big = false }
@@ -180,8 +177,7 @@ let count_struct m s =
   Array.iteri
     (fun i arr ->
       Array.iteri
-        (fun j _ ->
-          if has_struct m s (i * 16, j * 16) then count := !count + 1)
+        (fun j _ -> if has_struct m s (i * 16, j * 16) then count := !count + 1)
         arr)
     m.map;
   !count
@@ -208,9 +204,7 @@ let neighbor_by_dir m (x, y) (dir : Direction.dir) =
   |> normalize m
 
 let get_neighbors (maze : t) ((x : int), (y : int)) =
-  List.map
-    (fun dir -> neighbor_by_dir maze (x, y) dir)
-    Direction.dir_list
+  List.map (fun dir -> neighbor_by_dir maze (x, y) dir) Direction.dir_list
 
 let draw_maze (m : t) =
   Array.iter (fun arr -> Array.iter (fun e -> tile_draw e) arr) m.map
@@ -248,17 +242,15 @@ let entity_move m ?(jail_ok = false) (x, y) (dir : Direction.dir) d =
 let travel_dirs m (x1, y1) (x2, y2) =
   let x1, y1 = normalize m (x1, y1) in
   let x2, y2 = normalize m (x2, y2) in
-  (* preference to either [d1] or [d2] or none depending on comparison
-     result [r] of positions*)
+  (* preference to either [d1] or [d2] or none depending on comparison result
+     [r] of positions*)
   let get_prefer_dir r d1 d2 =
     match r with c when c < 0 -> [ d1 ] | 0 -> [] | _ -> [ d2 ]
   in
   let ydir = get_prefer_dir (compare y1 y2) South North in
   let xdir = get_prefer_dir (compare x1 x2) East West in
   (* maintain direction order preference such that N > W > S > E*)
-  match ydir @ xdir with
-  | [ South; West ] -> [ West; South ]
-  | lst -> lst
+  match ydir @ xdir with [ South; West ] -> [ West; South ] | lst -> lst
 
 let get_jail_coords (m : t) =
   let jails = !(m.exit) in

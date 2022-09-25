@@ -38,18 +38,15 @@ let create name loc dir =
   | Clyde -> { template with color = Graphics.rgb 255 165 0 }
 
 let set_mode mode ghost = { ghost with mode }
-
 let get_mode ghost = ghost.mode
-
 let set_in_jail in_jail ghost = { ghost with in_jail }
-
 let is_in_jail ghost = ghost.in_jail
 
 (** The width and height of each tile. *)
 let px = 16
 
-(** [draw_eyes ghost x y] draws [ghost]'s eyes, where the center of
-    [ghost] is ([x], [y]). *)
+(** [draw_eyes ghost x y] draws [ghost]'s eyes, where the center of [ghost] is
+    ([x], [y]). *)
 let draw_eyes ghost x y =
   Graphics.(
     set_color white;
@@ -93,13 +90,12 @@ let draw ghost =
   [@@coverage off]
 
 let get_coords ghost = ghost.pos
-
 let get_dir ghost = ghost.cdir
 
-(** [fix_position g m speed] updates [g]'s position if ghost [g] will
-    eventually be unable to move at a rate of [speed] due to limitations
-    in generic move algorithm below. This problem will likely arise from
-    switching between frightened and dead mode.*)
+(** [fix_position g m speed] updates [g]'s position if ghost [g] will eventually
+    be unable to move at a rate of [speed] due to limitations in generic move
+    algorithm below. This problem will likely arise from switching between
+    frightened and dead mode.*)
 let rec fix_position g m speed =
   let gx, gy = get_coords g in
   match (gx mod speed, gy mod speed) with
@@ -111,8 +107,7 @@ and move maze ghost (dir : Direction.dir) mvmt_speed =
   let x1, y1 = get_coords ghost in
   let x2, y2 =
     match ghost.mode with
-    | Dead ->
-        Maze.entity_move maze ~jail_ok:true (x1, y1) dir mvmt_speed
+    | Dead -> Maze.entity_move maze ~jail_ok:true (x1, y1) dir mvmt_speed
     | _ -> Maze.entity_move maze (x1, y1) dir mvmt_speed
   in
   if (x1, y1) <> (x2, y2) then { ghost with cdir = dir; pos = (x2, y2) }

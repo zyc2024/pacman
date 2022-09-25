@@ -1,10 +1,3 @@
-(************************************************************ 
-   Copyright (C) 2021 Cornell University.
-   Created by Michael Clarkson (mrc26@cornell.edu) and CS 3110 course staff.
-   You may not redistribute this assignment, distribute any derivatives,
-   or use it for commercial purposes.
- ************************************************************)
-
 (** CS 3110 Spring 2021 Pacman
 
     @author Daniel Buscaglia (djb326), Daniel Schwartz (dls422), and Zhiyuan Chen (zc333) *)
@@ -32,5 +25,5 @@
 
  ************************************************************)
 
-(** [hours_worked] is the number of hours you worked on this assignment. *)
+(** [hours_worked] is the number of hours we worked on this assignment. *)
 val hours_worked : int

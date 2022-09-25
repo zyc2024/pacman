@@ -3,10 +3,10 @@ open Components
 open Util
 
 (** AF : a pacman with position (x,y) with direction d1 and alternative
-    direction d2 represents a pacman player on the game map whose
-    location is (x,y) who is moving in direction d1 and attempts to move
-    in direction d2 if needed. RI : a pacman's current position (x,y)
-    must be within the map and not overlap any walls*)
+    direction d2 represents a pacman player on the game map whose location is
+    (x,y) who is moving in direction d1 and attempts to move in direction d2 if
+    needed. RI : a pacman's current position (x,y) must be within the map and
+    not overlap any walls*)
 type t = {
   pos : int * int;
   cdir : Direction.dir;
@@ -17,15 +17,12 @@ type t = {
 let speed = 2
 
 let create coords dir = { pos = coords; cdir = dir; adir = None }
-
 let get_coords p = p.pos
-
 let facing_dir p = p.cdir
 
-(** [draw_pacman (x,y) r a1 a2] draws a pacman with a radius [r] whose
-    center (x,y) is shifted by the given radius [r] in both dimensions.
-    The mouth opens at angle [a1] and ends at angle [a2]. Requires:
-    x,y,r are positive numbers*)
+(** [draw_pacman (x,y) r a1 a2] draws a pacman with a radius [r] whose center
+    (x,y) is shifted by the given radius [r] in both dimensions. The mouth opens
+    at angle [a1] and ends at angle [a2]. Requires: x,y,r are positive numbers*)
 let draw_pacman (x, y) r a1 a2 =
   let cx = x + r in
   let cy = Graphics.size_y () - (y + r) in
@@ -53,8 +50,7 @@ let move maze p =
   match p.adir with
   | Some dir ->
       let alt_pos = Maze.entity_move maze cur_pos dir speed in
-      if alt_pos <> cur_pos then
-        { pos = alt_pos; cdir = dir; adir = None }
+      if alt_pos <> cur_pos then { pos = alt_pos; cdir = dir; adir = None }
       else move_with_cdir
   | None -> move_with_cdir
 

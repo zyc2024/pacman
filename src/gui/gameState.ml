@@ -17,8 +17,8 @@ type t = {
   is_paused : bool;
 }
 
-(** [fruit_spawner] contains all the information regarding the fruit
-    spawning process (fruits remaining, duration, delay)*)
+(** [fruit_spawner] contains all the information regarding the fruit spawning
+    process (fruits remaining, duration, delay)*)
 type fruit_spawner = {
   (* The list of fruits that haven't been used yet in this level. *)
   lst : (Maze.fruit * (int * int)) list ref;
@@ -32,28 +32,24 @@ type fruit_spawner = {
   coords : (int * int) option ref;
 }
 
-(** [ghost_cycle] contains all the information regarding the ghost-mode
-    swapping process (scatter to chase and vice versa, durations)*)
+(** [ghost_cycle] contains all the information regarding the ghost-mode swapping
+    process (scatter to chase and vice versa, durations)*)
 type ghost_cycle = {
   (* the amount of scatter cycles*)
   scatter_count : int ref;
   (* the time spent in chase mode per mode switch*)
   chase_time : float;
-  (* the time spent in frightened mode per activation of power-up for
-     each level. Decreasing in total time across levels*)
+  (* the time spent in frightened mode per activation of power-up for each
+     level. Decreasing in total time across levels*)
   frightened_time : float list;
   (* the start time of the latest ghost event*)
   timer : float ref;
 }
 
 let get_score (game : t) = game.score
-
 let game_won (game : t) = game.coin_count = 0
-
 let paused (game : t) = game.is_paused
-
 let is_alive (game : t) = game.alive
-
 let num_lives (game : t) = game.lives
 
 let init_display (_game : t) =
@@ -62,9 +58,8 @@ let init_display (_game : t) =
     set_window_title "Pac-man";
     resize_window 450 590)
 
-(** [print_score] is a helper used to print the player's current score
-    as well as the all-time high score recorded on the player's
-    computer. *)
+(** [print_score] is a helper used to print the player's current score as well
+    as the all-time high score recorded on the player's computer. *)
 let print_score (game : t) (highscore : int) =
   Graphics.(
     Graphics.set_color Graphics.white;
@@ -78,8 +73,8 @@ let print_score (game : t) (highscore : int) =
       ("Press the spacebar to "
       ^ if game.is_paused then "unpause." else "pause."))
 
-(** [draw_lives pos lives] draws the number of lives the player has
-    starting at [pos] and stops when [lives] is 0. *)
+(** [draw_lives pos lives] draws the number of lives the player has starting at
+    [pos] and stops when [lives] is 0. *)
 let rec draw_lives game pos = function
   | x when x > 0 ->
       let p = Pacman.create pos East in
@@ -102,9 +97,7 @@ let draw_screen game highscore =
 let inital_fruit_list =
   let open Maze in
   let pos = (13 * 16, 17 * 16) in
-  List.map
-    (fun f -> (f, pos))
-    [ Cherry; Strawberry; Orange; Apple; Melon ]
+  List.map (fun f -> (f, pos)) [ Cherry; Strawberry; Orange; Apple; Melon ]
 
 let spawner =
   {
@@ -121,11 +114,10 @@ let reset_fruit_timer () = spawner.timer := Sys.time ()
 (** [update_down_time ()] updates the fruit spawn delay time*)
 let update_down_time () =
   spawner.down_time :=
-    float_of_int (Random.int 10 + 15)
-    +. (float_of_int (Random.int 100) /. 100.)
+    float_of_int (Random.int 10 + 15) +. (float_of_int (Random.int 100) /. 100.)
 
-(** [set_fruit maze ()] either does nothing when pacman has consumed all
-    the fruits for the level or deploys the next fruit*)
+(** [set_fruit maze ()] either does nothing when pacman has consumed all the
+    fruits for the level or deploys the next fruit*)
 let set_fruit maze () =
   match !(spawner.lst) with
   | [] -> ()
@@ -150,13 +142,12 @@ let update_fruit game =
   in
   game
 
-(** [toggle mode gs] updates all ghost modes to [mode]. Note: Dead
-    ghosts stay dead. *)
+(** [toggle mode gs] updates all ghost modes to [mode]. Note: Dead ghosts stay
+    dead. *)
 let toggle mode gs =
   Ghosts.(
     List.map
-      (fun g ->
-        match get_mode g with Dead -> g | _ -> set_mode mode g)
+      (fun g -> match get_mode g with Dead -> g | _ -> set_mode mode g)
       gs)
 
 let gcycle =
@@ -179,8 +170,8 @@ let reset_ghost_modes () =
   gcycle.scatter_count := 4
 
 (** [mode_finder ghosts] is the current mode of all [ghosts]. This is
-    [Frightened] if at least one ghost is [Frightened]. Otherwise, it is
-    the normal mode of the ghosts. *)
+    [Frightened] if at least one ghost is [Frightened]. Otherwise, it is the
+    normal mode of the ghosts. *)
 let mode_finder ghosts =
   let open Ghosts in
   let modes = List.map get_mode ghosts in
@@ -188,8 +179,8 @@ let mode_finder ghosts =
   | Some _ -> Frightened
   | None -> List.hd modes
 
-(** [update_gmode_aux glist mode] sets [mode] as the mode of every ghost
-    in [glist]*)
+(** [update_gmode_aux glist mode] sets [mode] as the mode of every ghost in
+    [glist]*)
 let update_gmode_aux glist mode =
   reset_ghost_timer ();
   toggle mode glist
@@ -210,8 +201,7 @@ let update_ghost_mode level game =
   | Frightened ->
       if elapsed_time >= List.nth gcycle.frightened_time level then
         glst :=
-          update_gmode_aux !glst
-            (if scatter_enabled then Scatter else Chase)
+          update_gmode_aux !glst (if scatter_enabled then Scatter else Chase)
   | Dead -> ());
   { game with ghosts = !glst }
 
@@ -253,8 +243,7 @@ let init_game w h score lives =
     pacman = Pacman.create (ox, 23 * 16) West;
     ghosts = init_ghosts;
     tile_size = 16;
-    coin_count =
-      Maze.count_struct maze Dot + Maze.count_struct maze PowerDot;
+    coin_count = Maze.count_struct maze Dot + Maze.count_struct maze PowerDot;
     alive = true;
     is_paused = false;
     maze;
@@ -276,8 +265,7 @@ let restart () =
   let read (status : Graphics.status) =
     if status.keypressed then
       match
-        (Graphics.wait_next_event [ Key_pressed ]).key
-        |> Char.lowercase_ascii
+        (Graphics.wait_next_event [ Key_pressed ]).key |> Char.lowercase_ascii
       with
       | 'r' -> true
       | _ -> false
@@ -285,22 +273,19 @@ let restart () =
   in
   Graphics.wait_next_event [ Poll ] |> read
 
-(** [new_state game dir] updates the pacman in [game] with [dir] iff the
-    game is not paused.*)
+(** [new_state game dir] updates the pacman in [game] with [dir] iff the game is
+    not paused.*)
 let new_state game dir =
   if not game.is_paused then
     { game with pacman = Pacman.change_dir game.maze game.pacman dir }
   else game
 
 let user_input game =
-  let toggle_pause game =
-    { game with is_paused = not game.is_paused }
-  in
+  let toggle_pause game = { game with is_paused = not game.is_paused } in
   let read (status : Graphics.status) =
     if status.keypressed then
       match
-        (Graphics.wait_next_event [ Key_pressed ]).key
-        |> Char.lowercase_ascii
+        (Graphics.wait_next_event [ Key_pressed ]).key |> Char.lowercase_ascii
       with
       | ' ' -> toggle_pause game
       | 'w' -> new_state game North
@@ -323,31 +308,22 @@ let move (game : t) =
       [
         BlinkyBehavior.move (List.nth ghosts 0) maze pac;
         PinkyBehavior.move (List.nth ghosts 1) maze pac;
-        InkyBehavior.move (List.nth ghosts 2) (List.nth ghosts 0) maze
-          pac;
+        InkyBehavior.move (List.nth ghosts 2) (List.nth ghosts 0) maze pac;
         ClydeBehavior.move (List.nth ghosts 3) maze pac;
       ];
   }
 
-(** [eat_pellet_aux game pos item] is [game] with the tile at position
-    [pos] cleared, with score updated, and ghosts frightened if [item]
-    is a power up. *)
+(** [eat_pellet_aux game pos item] is [game] with the tile at position [pos]
+    cleared, with score updated, and ghosts frightened if [item] is a power up. *)
 let eat_pellet_aux (game : t) pos item =
   let dot_eaten_state =
     Maze.make_struct game.maze Path pos;
-    {
-      game with
-      coin_count = game.coin_count - 1;
-      score = game.score + 10;
-    }
+    { game with coin_count = game.coin_count - 1; score = game.score + 10 }
   in
   match item with
   | Maze.Dot -> dot_eaten_state
   | Maze.PowerDot ->
-      {
-        dot_eaten_state with
-        ghosts = toggle Frightened dot_eaten_state.ghosts;
-      }
+      { dot_eaten_state with ghosts = toggle Frightened dot_eaten_state.ghosts }
   | _ -> failwith "impossible"
 
 let eat (game : t) =
@@ -367,8 +343,7 @@ let eat (game : t) =
         { game with score = game.score + points })
       else game
 
-(** [is_frightened ghost] is true iff [ghost]'s mode is
-    [Ghosts.Frightened]*)
+(** [is_frightened ghost] is true iff [ghost]'s mode is [Ghosts.Frightened]*)
 let is_frightened ghost = Ghosts.get_mode ghost = Ghosts.Frightened
 
 (** [is_dead ghost] is true iff [ghost] is [Dead]. *)
@@ -380,15 +355,12 @@ let short_pause t s =
     ()
   done
 
-(* [collision_effects game alive score lives g] reduces the number of
-   lives iff an [alive] pacman in [game] collides with [g]. If [g] is
-   frightened and pacman [alive] then [score] gets incremented.
-   Otherwise, there will be no side effects.*)
+(* [collision_effects game alive score lives g] reduces the number of lives iff
+   an [alive] pacman in [game] collides with [g]. If [g] is frightened and
+   pacman [alive] then [score] gets incremented. Otherwise, there will be no
+   side effects.*)
 let collision_effects game alive score lives (g : Ghosts.t) =
-  if
-    !alive
-    && (not (is_dead g))
-    && Ghosts.collision g game.pacman game.maze
+  if !alive && (not (is_dead g)) && Ghosts.collision g game.pacman game.maze
   then
     if is_frightened g then begin
       score := !score + 400;
@@ -406,9 +378,7 @@ let collision (game : t) =
   let alive = ref game.alive in
   let lives = ref game.lives in
   let updated_ghosts =
-    List.map
-      (fun g -> collision_effects game alive score lives g)
-      game.ghosts
+    List.map (fun g -> collision_effects game alive score lives g) game.ghosts
   in
   {
     game with

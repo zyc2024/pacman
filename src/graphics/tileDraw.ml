@@ -12,24 +12,21 @@ let wall_color = Graphics.rgb 54 134 183
 (** The color of a point dot. *)
 let point_filling_color = Graphics.rgb 255 229 180
 
-(* Graphics origin is at the bottom left corner. Adjust by raising
-   initial y coordinate to height of Graphics window. This is now the
-   new origin. Example : (0,100) would now be 100 pixels downwards from
-   the top left corner. Because fill_rect draws from the bottom corner,
-   the y-value is shifted down by tile_size to keep the rectangle at a
-   distance from the new origin as represented by its coordinate (x,y)*)
+(* Graphics origin is at the bottom left corner. Adjust by raising initial y
+   coordinate to height of Graphics window. This is now the new origin. Example
+   : (0,100) would now be 100 pixels downwards from the top left corner. Because
+   fill_rect draws from the bottom corner, the y-value is shifted down by
+   tile_size to keep the rectangle at a distance from the new origin as
+   represented by its coordinate (x,y)*)
 
 (** [draw_solid_tile (x, y) color] draws a [color] tile at [(x, y)]. *)
 let draw_solid_tile (x, y) color =
   Graphics.set_color color;
-  Graphics.fill_rect x
-    (Graphics.size_y () - y - tile_size)
-    tile_size tile_size
+  Graphics.fill_rect x (Graphics.size_y () - y - tile_size) tile_size tile_size
 
-(** [draw_fruit_body] draws a circle whose center is [(adjx, adjy)] and
-    radius [r] representing a fruit of [color]. Requires that [adjx] and
-    [adjy] represents a coordinate with respect to top left corner of
-    graphics*)
+(** [draw_fruit_body] draws a circle whose center is [(adjx, adjy)] and radius
+    [r] representing a fruit of [color]. Requires that [adjx] and [adjy]
+    represents a coordinate with respect to top left corner of graphics*)
 let draw_fruit_body (adjx, adjy) color r =
   set_color color;
   draw_circle adjx adjy r;
@@ -98,8 +95,6 @@ let draw_dot (x, y) is_big =
   let point_radius = if is_big then 4 else point_radius in
   draw_solid_tile (x, y) Graphics.black;
   Graphics.set_color point_filling_color;
-  let adjusted_y =
-    Graphics.size_y () - y - tile_size + (tile_size / 2)
-  in
+  let adjusted_y = Graphics.size_y () - y - tile_size + (tile_size / 2) in
   Graphics.draw_circle (x + (tile_size / 2)) adjusted_y point_radius;
   Graphics.fill_circle (x + (tile_size / 2)) adjusted_y point_radius

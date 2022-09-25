@@ -9,5 +9,5 @@
 (executable
  (public_name pacman)
  (name main)
- (modules main)
+ (modules main author)
  (libraries gui))

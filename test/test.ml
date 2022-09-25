@@ -1,21 +1,19 @@
-(** Testing plan: In general, we will test every component module and
-    attempt to achieve 100 percent Bisect coverage. In developing test
-    cases, we begin with black box testing techniques and aim for
-    correct outputs based on specification. To achieve high bisect
-    coverage, we will perform white box testing on individual functions
-    to capture all possible branches. We performed OUnit testing on the
-    following modules : [Maze], [MazeBuilder], [Pacman], [Ghosts],
-    [GhostBehavior], and [Direction]. We omitted the automated testing
-    of any graphics (such as those in module [TileDraw]) and user
-    interaction dependent/related functions such as in [GameState] and
-    [Main]. For those that we omitted, we consistently interacted with
-    the game for accurate outputs. We believe our test suite
-    demonstrates the correctness of our system because we aimed to
-    capture the majority (if not all) of the potential behaviorial
-    outcomes of individual components of our game through automated
-    coverage testing, and we manually tested the components as a whole
-    (the game user interface) to ensure they function together rather
-    than solely individually*)
+(** Testing plan: In general, we will test every component module and attempt to
+    achieve 100 percent Bisect coverage. In developing test cases, we begin with
+    black box testing techniques and aim for correct outputs based on
+    specification. To achieve high bisect coverage, we will perform white box
+    testing on individual functions to capture all possible branches. We
+    performed OUnit testing on the following modules : [Maze], [MazeBuilder],
+    [Pacman], [Ghosts], [GhostBehavior], and [Direction]. We omitted the
+    automated testing of any graphics (such as those in module [TileDraw]) and
+    user interaction dependent/related functions such as in [GameState] and
+    [Main]. For those that we omitted, we consistently interacted with the game
+    for accurate outputs. We believe our test suite demonstrates the correctness
+    of our system because we aimed to capture the majority (if not all) of the
+    potential behaviorial outcomes of individual components of our game through
+    automated coverage testing, and we manually tested the components as a whole
+    (the game user interface) to ensure they function together rather than
+    solely individually*)
 
 open OUnit2
 open Components
@@ -46,8 +44,7 @@ let pp_list pp_elt lst =
   [@@coverage off]
 
 (** [pp_tuple tp] pretty-prints a tuple*)
-let pp_tuple pp_elt tp =
-  "(" ^ pp_elt (fst tp) ^ "," ^ pp_elt (snd tp) ^ ")"
+let pp_tuple pp_elt tp = "(" ^ pp_elt (fst tp) ^ "," ^ pp_elt (snd tp) ^ ")"
 
 (** [dir_to_str dir] converts [dir] to string*)
 let dir_to_str = function
@@ -75,9 +72,9 @@ let pp_coord = pp_tuple string_of_int
 (** [loop i acc f] is [f_i (... f_1 (acc))]*)
 let rec loop i acc f = if i = 0 then acc else loop (i - 1) (f acc) f
 
-(** [lo -- hi] is the list containing the integers from [lo] to [hi],
-    inclusive. For example, [0 -- 3] is [0; 1; 2; 3], and [4 -- 3] is
-    [\[\]]. The implementation is tail recursive. (Credit to A0)*)
+(** [lo -- hi] is the list containing the integers from [lo] to [hi], inclusive.
+    For example, [0 -- 3] is [0; 1; 2; 3], and [4 -- 3] is [\[\]]. The
+    implementation is tail recursive. (Credit to A0)*)
 let ( -- ) lo hi =
   let rec loop lo hi acc =
     if lo > hi then acc else loop (lo + 1) hi (lo :: acc)
@@ -134,39 +131,24 @@ module MazeTest = struct
     [
       test "width of map 28x31" 10 width map string_of_int;
       test "height of map 28x31" 7 height map string_of_int;
-      test "normalize pos coord" (0, 0) (normalize map) (160, 0)
-        pp_coord;
-      test "normalize neg coord"
-        (9 * 16, 0)
-        (normalize map) (-16, 0) pp_coord;
-      test "make wall -> has wall" true (has Wall) (16, 16)
-        string_of_bool;
+      test "normalize pos coord" (0, 0) (normalize map) (160, 0) pp_coord;
+      test "normalize neg coord" (9 * 16, 0) (normalize map) (-16, 0) pp_coord;
+      test "make wall -> has wall" true (has Wall) (16, 16) string_of_bool;
       test "make [s1 -> ... -> sn], has sn" true (has Path) (0, 0)
         string_of_bool;
       test "has jail-exit" true (has JailExit) (64, 16) string_of_bool;
       test "has powerup" true (has PowerDot) (144, 0) string_of_bool;
-      test "dot is not powerup" false (has PowerDot) (0, 96)
-        string_of_bool;
-      test "has cherry" true (has (Fruit Cherry)) (144, 96)
-        string_of_bool;
-      test "fruit tile is not empty" false (has Path) (144, 96)
-        string_of_bool;
-      test "has some fruit (strawberry)" true has_fruit (8, 8)
-        string_of_bool;
-      test "has some fruit (melon)" true has_fruit (16, 16)
-        string_of_bool;
-      test "has some fruit (orange)" true has_fruit (0, 16)
-        string_of_bool;
-      test "has some fruit (apple)" true has_fruit (16, 0)
-        string_of_bool;
-      test "has some fruit (cherry)" true has_fruit (0, 32)
-        string_of_bool;
+      test "dot is not powerup" false (has PowerDot) (0, 96) string_of_bool;
+      test "has cherry" true (has (Fruit Cherry)) (144, 96) string_of_bool;
+      test "fruit tile is not empty" false (has Path) (144, 96) string_of_bool;
+      test "has some fruit (strawberry)" true has_fruit (8, 8) string_of_bool;
+      test "has some fruit (melon)" true has_fruit (16, 16) string_of_bool;
+      test "has some fruit (orange)" true has_fruit (0, 16) string_of_bool;
+      test "has some fruit (apple)" true has_fruit (16, 0) string_of_bool;
+      test "has some fruit (cherry)" true has_fruit (0, 32) string_of_bool;
       test "has no fruit" false has_fruit (16, 32) string_of_bool;
-      test "small map has no coins" 0
-        (count_struct fruit_map)
-        Dot string_of_int;
-      test "map has 1 powerup" 1 (count_struct map) PowerDot
-        string_of_int;
+      test "small map has no coins" 0 (count_struct fruit_map) Dot string_of_int;
+      test "map has 1 powerup" 1 (count_struct map) PowerDot string_of_int;
       fruit_point_test "cherry pts" map (144, 96) 100;
       fruit_point_test "strawberry pts" fruit_map (0, 0) 300;
       fruit_point_test "orange pts" fruit_map (0, 16) 500;
@@ -197,8 +179,7 @@ module MazeTest = struct
       test "tile S of (96,0)" (0, 0) (neighbor (0, 96)) South pp_coord;
       test "all neighbors of (0,0)"
         [ (0, 96); (144, 0); (0, 16); (16, 0) ]
-        (Maze.get_neighbors map)
-        (0, 0) (pp_list pp_coord);
+        (Maze.get_neighbors map) (0, 0) (pp_list pp_coord);
       test "2 units E of (0,0)" (2, 0) (moved (0, 0) 2) East pp_coord;
       test "2 units W of (0,0)" (158, 0) (moved (0, 0) 2) West pp_coord;
       test "2 units N of (0,0)" (0, 110) (moved (0, 0) 2) North pp_coord;
@@ -226,9 +207,9 @@ module MazeTest = struct
   let tests = structure_test @ mechanics_test
 end
 
-(* Use sample small map for testing (non-valid-map dependent) pacman and
-   ghosts features. This is a 10x10 dot maze with two horizontal
-   partial-jail exits and walls at (16,0), (0,32) and (48,0) *)
+(* Use sample small map for testing (non-valid-map dependent) pacman and ghosts
+   features. This is a 10x10 dot maze with two horizontal partial-jail exits and
+   walls at (16,0), (0,32) and (48,0) *)
 let maze = Maze.grid_init 10 10
 
 let _build =
@@ -243,7 +224,6 @@ module PacmanTest = struct
   open Pacman
 
   let update_dir = change_dir maze
-
   let pac_west = create (0, 0) West
 
   (* pacman facing west, move east whenever possible*)
@@ -261,23 +241,21 @@ module PacmanTest = struct
   let tests =
     let pmove = move maze in
     [
-      test "pacman at position (0, 0)" (0, 0) get_coords pac_west
-        pp_coord;
+      test "pacman at position (0, 0)" (0, 0) get_coords pac_west pp_coord;
       test "pacman facing west" West facing_dir pac_west pp_dir;
-      test "changes direction to North" North facing_dir pac_north
-        pp_dir;
-      test "move west (wrap) to (158, 0)" (158, 0) get_coords
-        (pmove pac_west) pp_coord;
-      test "cannot move east, moves west" (158, 0) get_coords
-        (pmove pac_we) pp_coord;
+      test "changes direction to North" North facing_dir pac_north pp_dir;
+      test "move west (wrap) to (158, 0)" (158, 0) get_coords (pmove pac_west)
+        pp_coord;
+      test "cannot move east, moves west" (158, 0) get_coords (pmove pac_we)
+        pp_coord;
       test "cannot move, updates to face east" East facing_dir
         (update_dir pac_still East)
         pp_dir;
-      test "move North (wrap) to (0, 158)" (0, 158) get_coords
-        (pmove pac_north) pp_coord;
+      test "move North (wrap) to (0, 158)" (0, 158) get_coords (pmove pac_north)
+        pp_coord;
       (let n_then_s = update_dir (pmove pac_north) South |> pmove in
-       test "move North (0, 158) and move south back to (0,0)" (0, 0)
-         get_coords n_then_s pp_coord);
+       test "move North (0, 158) and move south back to (0,0)" (0, 0) get_coords
+         n_then_s pp_coord);
       test "South until wall then move East (alt)" East facing_dir
         (loop 9 pac_se (move maze))
         pp_dir;
@@ -288,15 +266,10 @@ module GhostTests = struct
   open Ghosts
 
   let blinky = Ghosts.create Blinky (0, 0) North
-
   let pinky = Ghosts.create Pinky (16, 16) East
-
   let inky = Ghosts.create Inky (32, 0) West
-
   let clyde = Ghosts.create Clyde (48, 18) South
-
   let pacman = Pacman.create (0, 0) South
-
   let gmove = move maze
 
   let transition_x =
@@ -321,22 +294,19 @@ module GhostTests = struct
       test "Pinky face East" East get_dir pinky pp_dir;
       test "Inky face West" West get_dir inky pp_dir;
       test "Clyde face South" South get_dir clyde pp_dir;
-      test "Blinky fails East, moves North to (0, 158)" (0, 158)
-        get_coords (gmove blinky East 2) pp_coord;
-      test "Pinky moves East by 2" (18, 16) get_coords
-        (gmove pinky East 2) pp_coord;
-      test "frighten mode to chase (x axis)" (156, 0) get_coords
-        transition_x pp_coord;
-      test "frighten mode to chase (y axis)" (0, 156) get_coords
-        transition_y pp_coord;
-      test "dead ghost enters jail-gate" (48, 24) get_coords dead_clyde
+      test "Blinky fails East, moves North to (0, 158)" (0, 158) get_coords
+        (gmove blinky East 2) pp_coord;
+      test "Pinky moves East by 2" (18, 16) get_coords (gmove pinky East 2)
         pp_coord;
-      test "Ghost update mode" Frightened get_mode
-        (set_mode Frightened blinky) (fun m ->
-          pp_string (mode_to_str m));
-      test "ghost pacman collide" true
-        (collision blinky pacman)
-        maze string_of_bool;
+      test "frighten mode to chase (x axis)" (156, 0) get_coords transition_x
+        pp_coord;
+      test "frighten mode to chase (y axis)" (0, 156) get_coords transition_y
+        pp_coord;
+      test "dead ghost enters jail-gate" (48, 24) get_coords dead_clyde pp_coord;
+      test "Ghost update mode" Frightened get_mode (set_mode Frightened blinky)
+        (fun m -> pp_string (mode_to_str m));
+      test "ghost pacman collide" true (collision blinky pacman) maze
+        string_of_bool;
     ]
 end
 
@@ -350,8 +320,8 @@ module DirectionTests = struct
       test "North is opposite of East?" false
         (fun d -> opposite East = d)
         North string_of_bool;
-      test "complement of [NS]" [ West; East ] complement
-        [ North; South ] (pp_list pp_dir);
+      test "complement of [NS]" [ West; East ] complement [ North; South ]
+        (pp_list pp_dir);
     ]
 end
 
@@ -374,8 +344,8 @@ module MazeBuilderTests = struct
             build_level 10 10 "test_samples/sample2.json") );
       ( "invalid game-map -> no exit" >:: fun _ ->
         assert_raises (Failure "invalid map") (fun () ->
-            Maze.get_jail_coords
-              (build_level 10 10 "test_samples/sample3.json")) );
+            Maze.get_jail_coords (build_level 10 10 "test_samples/sample3.json"))
+      );
       test "valid map -> valid exit" (208, 192) Maze.get_jail_coords map
         pp_coord;
       test "initial ghost is in jail" true is_in_jail
@@ -387,8 +357,8 @@ module MazeBuilderTests = struct
       test "ghost coming into jail" true is_in_jail
         (update_jail_status (create Blinky (208, 192) South) map)
         string_of_bool;
-      test "pacman map has 4 powerups" 4 (Maze.count_struct map)
-        PowerDot string_of_int;
+      test "pacman map has 4 powerups" 4 (Maze.count_struct map) PowerDot
+        string_of_int;
       test "pacman map has 246 coins" 246 (Maze.count_struct map) Dot
         string_of_int;
     ]
@@ -401,9 +371,7 @@ module BehaviorTests = struct
   let m = MazeBuilder.build_level 28 31 "map.json"
 
   let gmove name ?(in_jail = false) mode bpos bdir tpos tdir =
-    let g =
-      create name bpos bdir |> set_mode mode |> set_in_jail in_jail
-    in
+    let g = create name bpos bdir |> set_mode mode |> set_in_jail in_jail in
     let p = Pacman.create tpos tdir in
     match name with
     | Blinky -> BlinkyBehavior.move g m p
@@ -416,8 +384,7 @@ module BehaviorTests = struct
   let tests =
     [
       ( "ghost (scatter) in jail, head towards exit",
-        gmove Blinky ~in_jail:true Scatter (208, 192) West (16, 16)
-          South,
+        gmove Blinky ~in_jail:true Scatter (208, 192) West (16, 16) South,
         (208, 190) );
       ( "ghost (chase) in jail, head towards exit",
         gmove Blinky ~in_jail:true Chase (208, 192) East (16, 16) South,
